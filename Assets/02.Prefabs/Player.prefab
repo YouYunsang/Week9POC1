@@ -13,10 +13,8 @@ GameObject:
   - component: {fileID: 1100287810470557714}
   - component: {fileID: 7772665934181354398}
   - component: {fileID: 8918802493643906655}
-  - component: {fileID: 3221511060319879438}
   - component: {fileID: 7086015182182964976}
   - component: {fileID: 5432142555592073996}
-  - component: {fileID: 8499214615196171065}
   - component: {fileID: 3885184624661489190}
   - component: {fileID: 3488096706343590654}
   - component: {fileID: 2400414213835050715}
@@ -94,20 +92,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56e40b0043f42e5458cb5deafcce354e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerCondition
---- !u!114 &3221511060319879438
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 609078172805180009}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f10c6374f073fc640b2460aebf220d7c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerOxygen
-  _oxygenData: {fileID: 11400000, guid: 81fdeb7298c60f645a1ee21fdbff12ed, type: 2}
-  _consumeOxygenOnStart: 1
 --- !u!114 &7086015182182964976
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -133,22 +117,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerInventory
   _maxSlotCount: 4
-  _maxWeight: 6
+  _maxWeight: 10
   _startItems:
   - _itemData: {fileID: 11400000, guid: 40b7aaca3005f3549aed3a83d6f25fd6, type: 2}
     _amount: 1
---- !u!114 &8499214615196171065
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 609078172805180009}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a6340a0b823e8c645bc73697dcb12a41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerHeldInteraction
 --- !u!114 &3885184624661489190
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -320,7 +292,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -1906047561
-  m_SortingLayer: 8
+  m_SortingLayer: 9
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: -9095717837082945937, guid: 207ee8102dd4143d288186ef0be518ee, type: 3}
@@ -411,10 +383,10 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 7, y: 2}
+    - - {x: 10, y: 3}
       - {x: 0.5, y: 0.2}
       - {x: 0.5, y: -0.2}
-      - {x: 7, y: -2}
+      - {x: 10, y: -3}
   m_UseDelaunayMesh: 1
 --- !u!1 &5078736651660163094
 GameObject:
@@ -497,28 +469,28 @@ MonoBehaviour:
   m_LightType: 1
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.6
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.8399494, g: 0.8792453, b: 0.29695258, a: 1}
   m_Intensity: 1
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
-  m_ApplyToSortingLayers: 00000000912b00107fc4bd54256b472c6bc027649ff2d68e6d6e247917a81f13b705648e61619c1f
+  m_ApplyToSortingLayers: 00000000912b00107fc4bd54256b472c6bc027649ff2d68e6d6e247917a81f13b705648e61619c1f973b6b66
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
-  m_LightOrder: 0
+  m_LightOrder: 1
   m_AlphaBlendOnOverlap: 0
   m_OverlapOperation: 0
   m_NormalMapDistance: 3
   m_NormalMapQuality: 2
   m_UseNormalMap: 0
   m_ShadowsEnabled: 1
-  m_ShadowIntensity: 0.75
+  m_ShadowIntensity: 1
   m_ShadowSoftness: 0.3
   m_ShadowSoftnessFalloffIntensity: 0.5
   m_ShadowVolumeIntensityEnabled: 0
   m_ShadowVolumeIntensity: 0.75
   m_LocalBounds:
-    m_Center: {x: 3.74975, y: 0.0014998913, z: 0}
-    m_Extent: {x: 3.75045, y: 2.4993, z: 0}
+    m_Center: {x: 4.9997497, y: 0.00075006485, z: 0}
+    m_Extent: {x: 6.85045, y: 4.84835, z: 0}
   m_PointLightInnerAngle: 360
   m_PointLightOuterAngle: 360
   m_PointLightInnerRadius: 0
@@ -526,10 +498,10 @@ MonoBehaviour:
   m_ShapeLightParametricSides: 5
   m_ShapeLightParametricAngleOffset: 0
   m_ShapeLightParametricRadius: 1
-  m_ShapeLightFalloffSize: 0.5
+  m_ShapeLightFalloffSize: 1.85
   m_ShapeLightFalloffOffset: {x: 0, y: 0}
   m_ShapePath:
-  - {x: 0.5, y: -0.2, z: 0}
-  - {x: 7, y: -2, z: 0}
-  - {x: 7, y: 2, z: 0}
-  - {x: 0.5, y: 0.2, z: 0}
+  - {x: 0, y: -0.5, z: 0}
+  - {x: 10, y: -3, z: 0}
+  - {x: 10, y: 3, z: 0}
+  - {x: 0, y: 0.5, z: 0}

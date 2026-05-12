@@ -1,12 +1,9 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(PlayerInputReader))]
 [RequireComponent(typeof(PlayerMovement))]
 [RequireComponent(typeof(PlayerCondition))]
-[RequireComponent(typeof(PlayerOxygen))]
 [RequireComponent(typeof(PlayerInteractionDetector))]
-[RequireComponent(typeof(PlayerHeldInteraction))]
 [RequireComponent(typeof(PlayerInventory))]
 [RequireComponent(typeof(PlayerFlashlight))]
 public sealed class PlayerController : MonoBehaviour
@@ -14,16 +11,11 @@ public sealed class PlayerController : MonoBehaviour
     private PlayerInputReader _inputReader;
     private PlayerMovement _movement;
     private PlayerCondition _condition;
-    private PlayerOxygen _oxygen;
     private PlayerInteractionDetector _interactionDetector;
-    private PlayerHeldInteraction _heldInteraction;
     private PlayerFlashlight _flashlight;
-    private PlayerInventory _inventory;
 
     private Vector2 _moveInput;
     private bool _isSprinting;
-
-    private const float MOVE_CANCEL_THRESHOLD = 0.1f;
 
     public bool IsSprinting => _isSprinting;
     public bool CanMove => _condition != null && _condition.CanMove;
@@ -34,11 +26,8 @@ public sealed class PlayerController : MonoBehaviour
         _inputReader = GetComponent<PlayerInputReader>();
         _movement = GetComponent<PlayerMovement>();
         _condition = GetComponent<PlayerCondition>();
-        _oxygen = GetComponent<PlayerOxygen>();
         _interactionDetector = GetComponent<PlayerInteractionDetector>();
-        _heldInteraction = GetComponent<PlayerHeldInteraction>();
         _flashlight = GetComponent<PlayerFlashlight>();
-        _inventory = GetComponent<PlayerInventory>();
     }
 
     private void OnEnable()
@@ -47,44 +36,32 @@ public sealed class PlayerController : MonoBehaviour
         _inputReader.MoveInputChanged += HandleMoveInputChanged;
         _inputReader.SprintInputChanged += HandleSprintInputChanged;
         _inputReader.InteractInputStarted += HandleInteractInputStarted;
-        _inputReader.InteractInputCanceled += HandleInteractInputCanceled;
         _inputReader.FlashlightToggleInputStarted += HandleFlashlightToggleInputStarted;
-
-        // 산소 고갈 이벤트를 구독한다.
-        _oxygen.OxygenDepleted += HandleOxygenDepleted;
     }
 
     private void OnDisable()
     {
-        // 비활성화 시 이벤트 구독을 해제해 중복 호출을 방지한다.
+        // 비활성화 시 이벤트 구독을 해제한다.
         _inputReader.MoveInputChanged -= HandleMoveInputChanged;
         _inputReader.SprintInputChanged -= HandleSprintInputChanged;
         _inputReader.InteractInputStarted -= HandleInteractInputStarted;
-        _inputReader.InteractInputCanceled -= HandleInteractInputCanceled;
         _inputReader.FlashlightToggleInputStarted -= HandleFlashlightToggleInputStarted;
-
-        _oxygen.OxygenDepleted -= HandleOxygenDepleted;
     }
 
     private void Update()
     {
-        // 현재 상태를 기준으로 실제 이동 입력을 결정한다.
+        // 플레이어 상태에 따라 실제 이동 입력을 결정한다.
         Vector2 finalMoveInput = _condition.CanMove ? _moveInput : Vector2.zero;
         bool finalSprintState = _condition.CanMove && _isSprinting;
 
-        // 이동 컴포넌트에 최종 입력을 전달한다.
+        // 이동 전용 컴포넌트에 최종 입력을 전달한다.
         _movement.SetMoveInput(finalMoveInput);
         _movement.SetSprintState(finalSprintState);
-
-        // 산소 컴포넌트에는 현재 이동 상태를 전달한다.
-        _oxygen.SetMovementState(finalMoveInput, finalSprintState);
-
-        HandleDropInput();
     }
 
     public void SetMovementEnabled(bool isEnabled)
     {
-        // 기존 외부 호출 호환을 위해 남겨두되, 실제 상태 관리는 PlayerCondition에 위임한다.
+        // 패닉, 이벤트 연출 등에서 플레이어 이동을 제어할 수 있게 한다.
         _condition.SetMovementBlocked(!isEnabled);
 
         if (isEnabled)
@@ -103,14 +80,7 @@ public sealed class PlayerController : MonoBehaviour
             return;
         }
 
-        if (_heldInteraction.IsHolding &&
-            moveInput.sqrMagnitude > MOVE_CANCEL_THRESHOLD * MOVE_CANCEL_THRESHOLD)
-        {
-            // Hold 상호작용 중 이동 입력이 들어오면 작업을 취소한다.
-            _heldInteraction.CancelHold();
-        }
-
-        // 입력값은 Controller가 보관하고, 실제 이동은 Update에서 일괄 전달한다.
+        // 입력값은 Controller가 보관하고, 이동은 Update에서 처리한다.
         _moveInput = moveInput;
     }
 
@@ -122,7 +92,7 @@ public sealed class PlayerController : MonoBehaviour
             return;
         }
 
-        // 빠른 헤엄 상태를 저장한다.
+        // Sprint는 유지하되, 이번 단계에서는 배터리/패닉과 연결하지 않는다.
         _isSprinting = isSprinting;
     }
 
@@ -133,30 +103,8 @@ public sealed class PlayerController : MonoBehaviour
             return;
         }
 
-        // Hold 상호작용 대상이면 먼저 Hold를 시작한다.
-        if (_heldInteraction.TryBeginHold())
-        {
-            return;
-        }
-
-        // Hold 대상이 아니면 일반 상호작용을 시도한다.
+        // 현재 감지된 상호작용 대상을 실행한다.
         _interactionDetector.TryInteract();
-    }
-
-    private void HandleInteractInputCanceled()
-    {
-        // E를 떼면 진행 중인 Hold 상호작용을 취소한다.
-        _heldInteraction.CancelHold();
-    }
-
-    private void HandleOxygenDepleted()
-    {
-        // 산소 고갈은 플레이어 사망 상태로 전환된다.
-        _condition.Die();
-
-        // 사망 즉시 진행 중인 Hold 상호작용과 이동 입력을 제거한다.
-        _heldInteraction.CancelHold();
-        ClearMovementInput();
     }
 
     private void HandleFlashlightToggleInputStarted()
@@ -166,38 +114,17 @@ public sealed class PlayerController : MonoBehaviour
             return;
         }
 
-        // F 입력으로 플래시라이트를 켜거나 끈다.
+        // F 입력으로 손전등을 켜거나 끈다.
         _flashlight.Toggle();
-    }
-
-    private void HandleDropInput()
-    {
-        if (!_condition.CanReceiveInput)
-        {
-            return;
-        }
-
-        if (Keyboard.current == null || !Keyboard.current.qKey.wasPressedThisFrame)
-        {
-            return;
-        }
-
-        if (_inventory == null)
-        {
-            return;
-        }
-
-        _inventory.TryDropRandomNonToolItem(out _);
     }
 
     private void ClearMovementInput()
     {
-        // 이동과 빠른 헤엄 입력을 초기화한다.
+        // 이동 입력과 Sprint 상태를 초기화한다.
         _moveInput = Vector2.zero;
         _isSprinting = false;
 
         _movement.SetMoveInput(Vector2.zero);
         _movement.SetSprintState(false);
-        _oxygen.SetMovementState(Vector2.zero, false);
     }
 }

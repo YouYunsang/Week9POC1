@@ -3,7 +3,6 @@ using UnityEngine;
 
 [RequireComponent(typeof(PlayerCondition))]
 [RequireComponent(typeof(PlayerInventory))]
-[RequireComponent(typeof(PlayerOxygen))]
 public sealed class PlayerInteractionDetector : MonoBehaviour
 {
     private readonly List<IInteractable> _interactables = new List<IInteractable>();
