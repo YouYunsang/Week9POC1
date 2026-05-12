@@ -139,6 +139,6 @@ public sealed class PlayerInteractionDetector : MonoBehaviour
     public InteractionContext CreateInteractionContext()
     {
         // 상호작용에 필요한 플레이어 관련 정보를 묶어서 전달한다.
-        return new InteractionContext(gameObject, _condition, _inventory, _oxygen);
+        return new InteractionContext(gameObject, _condition, _inventory);
     }
 }

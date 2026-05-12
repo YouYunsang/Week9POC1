@@ -32,11 +32,11 @@ public class PlayerHeldInteraction : MonoBehaviour
     {
         if(!_isHolding || _currentHoldInteractable == null) return;
 
-        if (_condition.IsDead)
-        {
-            CancelHold();
-            return;
-        }
+        //if (_condition.IsDead)
+        //{
+        //    CancelHold();
+        //    return;
+        //}
 
         bool isCompleted = _currentHoldInteractable.TickHold(_currentContext, Time.deltaTime);
 

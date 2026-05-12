@@ -20,7 +20,7 @@ public sealed class ItemPickup : MonoBehaviour, IInteractable
 
     public bool CanInteract(InteractionContext context)
     {
-        if (context.PlayerCondition == null || context.PlayerCondition.IsDead)
+        if (context.PlayerCondition == null) //|| context.PlayerCondition.IsDead)
         {
             return false;
         }

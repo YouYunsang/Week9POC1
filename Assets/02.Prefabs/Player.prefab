@@ -19,6 +19,9 @@ GameObject:
   - component: {fileID: 3488096706343590654}
   - component: {fileID: 2400414213835050715}
   - component: {fileID: 26456939715543725}
+  - component: {fileID: 1960745365196642967}
+  - component: {fileID: 8847093418447691171}
+  - component: {fileID: 2565924160716340576}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -214,6 +217,43 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 1, y: 2}
   m_Direction: 0
+--- !u!114 &1960745365196642967
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 609078172805180009}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41be9d91d15e790469f3f1154f45b6e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerInteractionController
+--- !u!114 &8847093418447691171
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 609078172805180009}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 536d7ced8a76f794a8ba43b7050fa7c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerFlashlightController
+--- !u!114 &2565924160716340576
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 609078172805180009}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e618aff6f3b4ed468f707c265f43a36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerBattery
+  _batteryData: {fileID: 11400000, guid: f28a2356cb0f159498207067eb0860b5, type: 2}
 --- !u!1 &1434265577642366272
 GameObject:
   m_ObjectHideFlags: 0

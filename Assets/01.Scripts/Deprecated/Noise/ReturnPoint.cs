@@ -24,7 +24,7 @@ public sealed class ReturnPoint : MonoBehaviour, IInteractable
         }
 
         // 죽은 상태에서는 복귀할 수 없다.
-        return !context.PlayerCondition.IsDead;
+        return true; //!context.PlayerCondition.IsDead;
     }
 
     public void Interact(InteractionContext context)

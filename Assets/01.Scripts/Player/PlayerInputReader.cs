@@ -14,42 +14,43 @@ public sealed class PlayerInputReader : MonoBehaviour
 
     public void SetMoveInput(Vector2 moveInput)
     {
-        // InputManager에서 전달받은 이동 입력을 저장한다.
+        // InputManager에서 받은 이동 입력을 저장한다.
         MoveInput = moveInput;
 
-        // PlayerController에 이동 입력 변경을 알린다.
+        // 이동 입력 변경을 구독자에게 전달한다.
         MoveInputChanged?.Invoke(MoveInput);
     }
 
     public void SetSprintInput(bool isSprinting)
     {
-        // InputManager에서 전달받은 빠른 헤엄 입력을 저장한다.
+        // Sprint 입력 상태를 저장한다.
         IsSprinting = isSprinting;
 
-        // PlayerController에 빠른 헤엄 상태 변경을 알린다.
+        // Sprint 상태 변경을 구독자에게 전달한다.
         SprintInputChanged?.Invoke(IsSprinting);
     }
 
     public void NotifyInteractInputStarted()
     {
-        // 상호작용 입력이 시작되었음을 알린다.
+        // 상호작용 입력 시작을 알린다.
         InteractInputStarted?.Invoke();
     }
 
     public void NotifyInteractInputCanceled()
     {
+        // Hold 상호작용 확장 가능성을 위해 취소 이벤트는 남긴다.
         InteractInputCanceled?.Invoke();
     }
 
     public void NotifyFlashlightToggleInputStarted()
     {
-        // 플래시라이트 토글 입력이 시작되었음을 알린다.
+        // 손전등 토글 입력을 알린다.
         FlashlightToggleInputStarted?.Invoke();
     }
 
     public void ResetInput()
     {
-        // 입력 상태가 남아 플레이어가 계속 움직이는 문제를 방지한다.
+        // 입력 상태가 남아 플레이어가 계속 움직이는 문제를 막는다.
         MoveInput = Vector2.zero;
         IsSprinting = false;
 
@@ -60,7 +61,7 @@ public sealed class PlayerInputReader : MonoBehaviour
 
     private void OnDisable()
     {
-        // Player 오브젝트가 비활성화될 때 입력 상태를 초기화한다.
+        // 비활성화 시 입력 상태를 초기화한다.
         ResetInput();
     }
 }

@@ -4,11 +4,9 @@ using UnityEngine.InputSystem;
 public sealed class InputManager : MonoBehaviour
 {
     [SerializeField] private PlayerInputReader _playerInputReader;
-    [SerializeField] private CameraInputReader _cameraInputReader;
 
     public void OnMove(InputAction.CallbackContext context)
     {
-        // Move 입력은 Vector2로 읽어서 PlayerInputReader에 전달한다.
         Vector2 moveInput = context.ReadValue<Vector2>();
 
         if (_playerInputReader == null)
@@ -16,12 +14,12 @@ public sealed class InputManager : MonoBehaviour
             return;
         }
 
+        // 이동 입력을 PlayerInputReader로 전달한다.
         _playerInputReader.SetMoveInput(moveInput);
     }
 
     public void OnSprint(InputAction.CallbackContext context)
     {
-        // Sprint 입력은 버튼 상태로 읽어서 PlayerInputReader에 전달한다.
         bool isSprinting = context.ReadValueAsButton();
 
         if (_playerInputReader == null)
@@ -29,6 +27,7 @@ public sealed class InputManager : MonoBehaviour
             return;
         }
 
+        // Sprint 입력 상태를 PlayerInputReader로 전달한다.
         _playerInputReader.SetSprintInput(isSprinting);
     }
 
@@ -41,12 +40,14 @@ public sealed class InputManager : MonoBehaviour
 
         if (context.performed)
         {
+            // 상호작용 시작 입력을 알린다.
             _playerInputReader.NotifyInteractInputStarted();
             return;
         }
 
         if (context.canceled)
         {
+            // 상호작용 취소 입력을 알린다.
             _playerInputReader.NotifyInteractInputCanceled();
         }
     }
@@ -63,34 +64,18 @@ public sealed class InputManager : MonoBehaviour
             return;
         }
 
-        // F 입력으로 플래시라이트 토글을 요청한다.
+        // 손전등 토글 입력을 알린다.
         _playerInputReader.NotifyFlashlightToggleInputStarted();
-    }
-
-    public void OnZoom(InputAction.CallbackContext context)
-    {
-        // Mouse Scroll 입력은 Vector2로 들어오며 y축만 줌 입력으로 사용한다.
-        Vector2 scrollInput = context.ReadValue<Vector2>();
-
-        if (_cameraInputReader == null)
-        {
-            return;
-        }
-
-        _cameraInputReader.SetZoomInput(scrollInput.y);
     }
 
     private void OnDisable()
     {
-        // InputManager가 비활성화될 때 입력 상태가 남지 않도록 초기화한다.
-        if (_playerInputReader != null)
+        if (_playerInputReader == null)
         {
-            _playerInputReader.ResetInput();
+            return;
         }
 
-        if (_cameraInputReader != null)
-        {
-            _cameraInputReader.ResetInput();
-        }
+        // InputManager가 꺼질 때 입력 상태를 초기화한다.
+        _playerInputReader.ResetInput();
     }
 }

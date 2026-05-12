@@ -58,10 +58,10 @@ public sealed class PlayerOxygen : MonoBehaviour
             return;
         }
 
-        if (_condition.IsDead)
-        {
-            return;
-        }
+        //if (_condition.IsDead)
+        //{
+        //    return;
+        //}
 
         // 현재 이동 상태에 맞는 초당 산소 소모량을 계산한다.
         float consumeAmount = CalculateConsumePerSecond() * Time.deltaTime;
@@ -119,10 +119,10 @@ public sealed class PlayerOxygen : MonoBehaviour
 
     public void ConsumeOxygen(float amount)
     {
-        if (_condition.IsDead)
-        {
-            return;
-        }
+        //if (_condition.IsDead)
+        //{
+        //    return;
+        //}
 
         if (_oxygenData == null)
         {

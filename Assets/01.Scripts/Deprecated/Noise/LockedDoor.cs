@@ -31,7 +31,7 @@ public sealed class LockedDoor : MonoBehaviour, IHoldInteractable
             return false;
         }
 
-        if (context.PlayerCondition == null || context.PlayerCondition.IsDead)
+        if (context.PlayerCondition == null) //|| context.PlayerCondition.IsDead)
         {
             return false;
         }
@@ -74,7 +74,7 @@ public sealed class LockedDoor : MonoBehaviour, IHoldInteractable
             return false;
         }
 
-        if (context.PlayerCondition == null || context.PlayerCondition.IsDead)
+        if (context.PlayerCondition == null) // || context.PlayerCondition.IsDead)
         {
             return false;
         }
@@ -99,11 +99,11 @@ public sealed class LockedDoor : MonoBehaviour, IHoldInteractable
     {
         _noiseTimer = 0.0f;
 
-        if (_useCrowbarOxygenCost && context.PlayerOxygen != null)
-        {
-            // 쇠지레 사용 중 추가 산소 소모를 시작한다.
-            context.PlayerOxygen.SetExtraConsumePerSecond(context.PlayerOxygen.CrowbarUseConsumePerSecond);
-        }
+        //if (_useCrowbarOxygenCost && context.PlayerOxygen != null)
+        //{
+        //    // 쇠지레 사용 중 추가 산소 소모를 시작한다.
+        //    context.PlayerOxygen.SetExtraConsumePerSecond(context.PlayerOxygen.CrowbarUseConsumePerSecond);
+        //}
 
         EmitNoise(context);
 
@@ -117,7 +117,7 @@ public sealed class LockedDoor : MonoBehaviour, IHoldInteractable
             return true;
         }
 
-        if (context.PlayerCondition == null || context.PlayerCondition.IsDead)
+        if (context.PlayerCondition == null)// || context.PlayerCondition.IsDead)
         {
             CancelHold(context);
             return false;
@@ -148,11 +148,11 @@ public sealed class LockedDoor : MonoBehaviour, IHoldInteractable
 
     public void CancelHold(InteractionContext context)
     {
-        if (context.PlayerOxygen != null)
-        {
-            // 쇠지레 사용 중 추가 산소 소모를 중단한다.
-            context.PlayerOxygen.ClearExtraConsumePerSecond();
-        }
+        //if (context.PlayerOxygen != null)
+        //{
+        //    // 쇠지레 사용 중 추가 산소 소모를 중단한다.
+        //    context.PlayerOxygen.ClearExtraConsumePerSecond();
+        //}
 
         Debug.Log($"문 열기 중단: 진행도 {GetProgressRatio() * 100.0f:0}%");
     }
@@ -162,11 +162,11 @@ public sealed class LockedDoor : MonoBehaviour, IHoldInteractable
         _isOpened = true;
         _currentProgress = _openDuration;
 
-        if (context.PlayerOxygen != null)
-        {
-            // 문 열기 완료 후 추가 산소 소모를 중단한다.
-            context.PlayerOxygen.ClearExtraConsumePerSecond();
-        }
+        //if (context.PlayerOxygen != null)
+        //{
+        //    // 문 열기 완료 후 추가 산소 소모를 중단한다.
+        //    context.PlayerOxygen.ClearExtraConsumePerSecond();
+        //}
 
         Debug.Log("잠긴 문이 열렸습니다.");
 
