@@ -13,6 +13,7 @@ public sealed class PlayerBattery : MonoBehaviour
     public float MaxBattery => _batteryData != null ? _batteryData.MaxBattery : 0.0f;
     public float BatteryRatio => MaxBattery <= 0.0f ? 0.0f : Mathf.Clamp01(_currentBattery / MaxBattery);
     public bool HasBattery => _currentBattery > 0.0f;
+    public bool IsFull => _batteryData != null && _currentBattery >= _batteryData.MaxBattery;
 
     private void Awake()
     {
@@ -79,6 +80,17 @@ public sealed class PlayerBattery : MonoBehaviour
 
         // 프레임 시간에 따른 손전등 소모량을 계산한다.
         return _batteryData.FlashlightDrainPerSecond * deltaTime;
+    }
+
+    public float GetOneCellAmount()
+    {
+        if (_batteryData == null)
+        {
+            return 0.0f;
+        }
+
+        // 배터리 5칸 중 1칸, 즉 20% 회복량을 반환한다.
+        return _batteryData.MaxBattery * 0.2f;
     }
 
     private void RaiseBatteryChanged()

@@ -68,6 +68,22 @@ public sealed class InputManager : MonoBehaviour
         _playerInputReader.NotifyFlashlightToggleInputStarted();
     }
 
+    public void OnMapToggle(InputAction.CallbackContext context)
+    {
+        if (!context.performed)
+        {
+            return;
+        }
+
+        if (_playerInputReader == null)
+        {
+            return;
+        }
+
+        // 확대 맵 열기/닫기 입력을 PlayerInputReader로 전달한다.
+        _playerInputReader.NotifyMapToggleInputStarted();
+    }
+
     private void OnDisable()
     {
         if (_playerInputReader == null)

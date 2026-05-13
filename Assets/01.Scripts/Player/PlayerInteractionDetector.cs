@@ -3,27 +3,18 @@ using UnityEngine;
 
 [RequireComponent(typeof(PlayerCondition))]
 [RequireComponent(typeof(PlayerInventory))]
+[RequireComponent(typeof(PlayerBattery))]
+[RequireComponent(typeof(PlayerMovement))]
 public sealed class PlayerInteractionDetector : MonoBehaviour
 {
     private readonly List<IInteractable> _interactables = new List<IInteractable>();
 
     private PlayerCondition _condition;
     private PlayerInventory _inventory;
-    private PlayerOxygen _oxygen;
+    private PlayerBattery _battery;
+    private PlayerMovement _movement;
 
     public bool HasInteractable => TryGetBestInteractable(out _);
-
-    private void Reset()
-    {
-        // 같은 GameObject의 플레이어 상태 컴포넌트를 캐싱한다.
-        _condition = GetComponent<PlayerCondition>();
-
-        // 같은 GameObject의 인벤토리 컴포넌트를 캐싱한다.
-        _inventory = GetComponent<PlayerInventory>();
-
-        // 같은 GameObject의 산소 컴포넌트를 캐싱한다.
-        _oxygen = GetComponent<PlayerOxygen>();
-    }
 
     private void Awake()
     {
@@ -33,8 +24,11 @@ public sealed class PlayerInteractionDetector : MonoBehaviour
         // 같은 GameObject의 인벤토리 컴포넌트를 캐싱한다.
         _inventory = GetComponent<PlayerInventory>();
 
-        // 같은 GameObject의 산소 컴포넌트를 캐싱한다.
-        _oxygen = GetComponent<PlayerOxygen>();
+        // 같은 GameObject의 배터리 컴포넌트를 캐싱한다.
+        _battery = GetComponent<PlayerBattery>();
+
+        // 같은 GameObject의 이동 컴포넌트를 캐싱한다.
+        _movement = GetComponent<PlayerMovement>();
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -85,7 +79,7 @@ public sealed class PlayerInteractionDetector : MonoBehaviour
             return;
         }
 
-        if(!TryGetBestInteractable(out IInteractable interactable))
+        if (!TryGetBestInteractable(out IInteractable interactable))
         {
             return;
         }
@@ -105,7 +99,7 @@ public sealed class PlayerInteractionDetector : MonoBehaviour
     {
         bestInteractable = null;
 
-        if(_interactables.Count <= 0)
+        if (_interactables.Count <= 0)
         {
             return false;
         }
@@ -113,21 +107,25 @@ public sealed class PlayerInteractionDetector : MonoBehaviour
         int bestPriority = int.MinValue;
         InteractionContext context = CreateInteractionContext();
 
-        for(int i = _interactables.Count - 1; i >=0; i--)
+        for (int i = _interactables.Count - 1; i >= 0; i--)
         {
             IInteractable interactable = _interactables[i];
 
-            if(interactable == null)
+            if (interactable == null)
             {
                 _interactables.RemoveAt(i);
                 continue;
             }
 
-            if(!interactable.CanInteract(context))
+            if (!interactable.CanInteract(context))
+            {
                 continue;
+            }
 
-            if(interactable.InteractionPriority <= bestPriority)
+            if (interactable.InteractionPriority <= bestPriority)
+            {
                 continue;
+            }
 
             bestInteractable = interactable;
             bestPriority = interactable.InteractionPriority;
@@ -139,6 +137,6 @@ public sealed class PlayerInteractionDetector : MonoBehaviour
     public InteractionContext CreateInteractionContext()
     {
         // 상호작용에 필요한 플레이어 관련 정보를 묶어서 전달한다.
-        return new InteractionContext(gameObject, _condition, _inventory);
+        return new InteractionContext(gameObject, _condition, _inventory, _battery, _movement);
     }
 }

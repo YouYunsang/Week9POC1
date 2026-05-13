@@ -8,6 +8,7 @@ public sealed class PlayerInputReader : MonoBehaviour
     public event Action InteractInputStarted;
     public event Action InteractInputCanceled;
     public event Action FlashlightToggleInputStarted;
+    public event Action MapToggleInputStarted;
 
     public Vector2 MoveInput { get; private set; }
     public bool IsSprinting { get; private set; }
@@ -46,6 +47,12 @@ public sealed class PlayerInputReader : MonoBehaviour
     {
         // 손전등 토글 입력을 알린다.
         FlashlightToggleInputStarted?.Invoke();
+    }
+
+    public void NotifyMapToggleInputStarted()
+    {
+        // 확대 맵 열기/닫기 입력을 알린다.
+        MapToggleInputStarted?.Invoke();
     }
 
     public void ResetInput()

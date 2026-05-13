@@ -12,10 +12,13 @@ public sealed class PlayerInventory : MonoBehaviour
 
     [Header("Start Items")]
     [SerializeField] private List<ItemStack> _startItems = new List<ItemStack>();
+    [SerializeField] private List<int> _startKeyCardIds = new List<int>();
 
     private readonly List<ItemStack> _slots = new List<ItemStack>();
+    private readonly HashSet<int> _ownedKeyCardIds = new HashSet<int>();
 
     public event Action InventoryChanged;
+    public event Action KeyCardChanged;
 
     public int MaxSlotCount => _maxSlotCount;
     public float MaxWeight => _maxWeight;
@@ -27,6 +30,7 @@ public sealed class PlayerInventory : MonoBehaviour
     private void Start()
     {
         AddStartItems();
+        AddStartKeyCards();
     }
 
     public bool TryAddItem(ItemData itemData, int amount)
@@ -305,6 +309,47 @@ public sealed class PlayerInventory : MonoBehaviour
         }
 
         return totalWeight;
+    }
+
+    public bool HasKeyCard(int keyCardId)
+    {
+        // 특정 ID 카드 보유 여부를 반환한다.
+        return _ownedKeyCardIds.Contains(keyCardId);
+    }
+
+    public bool AddKeyCard(int keyCardId)
+    {
+        if (keyCardId <= 0)
+        {
+            Debug.LogWarning("KeyCard ID는 1 이상이어야 합니다.");
+            return false;
+        }
+
+        if (!_ownedKeyCardIds.Add(keyCardId))
+        {
+            Debug.Log($"이미 보유한 ID 카드입니다. ID: {keyCardId}");
+            return false;
+        }
+
+        // KeyCard 변경을 알린다.
+        KeyCardChanged?.Invoke();
+
+        Debug.Log($"ID 카드 {keyCardId} 획득");
+
+        return true;
+    }
+
+    public IReadOnlyCollection<int> GetOwnedKeyCardIds()
+    {
+        return _ownedKeyCardIds;
+    }
+
+    private void AddStartKeyCards()
+    {
+        for (int i = 0; i < _startKeyCardIds.Count; i++)
+        {
+            AddKeyCard(_startKeyCardIds[i]);
+        }
     }
 
 #if UNITY_EDITOR
