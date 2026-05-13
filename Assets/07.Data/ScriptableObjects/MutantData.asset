@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 521b4739b6bfa03478a65f93883ebd82, type: 3}
+  m_Name: MutantData
+  m_EditorClassIdentifier: Assembly-CSharp::MutantData
+  _detectionDistance: 3
+  _approachSpeed: 8
+  _stoppingDistanceFromPlayer: 1.2
+  _maxApproachDuration: 1
+  _dormantPulseScale: 1.04
+  _dormantPulseDuration: 1.2
+  _jumpScareScale: 1.25
+  _jumpScareScaleDuration: 0.12
+  _threateningPulseScale: 1.08
+  _threateningPulseDuration: 0.55
