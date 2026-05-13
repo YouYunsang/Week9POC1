@@ -209,6 +209,11 @@ public sealed class MapGridView : MonoBehaviour
             Transform child = _cellContainer.GetChild(i);
 
             // 런타임에서 기존 셀 UI를 정리한다.
+            if (child.GetComponent<MapCellView>() == null)
+            {
+                continue;
+            }
+
             Destroy(child.gameObject);
         }
     }

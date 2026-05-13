@@ -30,12 +30,16 @@ MonoBehaviour:
   - {x: 2, y: 2}
   - {x: 3, y: 2}
   - {x: 4, y: 0}
+  - {x: 4, y: 1}
   - {x: 5, y: -1}
   - {x: 5, y: 0}
   - {x: 5, y: 1}
   - {x: 5, y: 2}
   - {x: 5, y: 3}
-  _editorRectangleStart: {x: 0, y: 0}
-  _editorRectangleSize: {x: 1, y: 31}
+  - {x: 6, y: 0}
+  - {x: 6, y: -1}
+  - {x: 6, y: 1}
+  _editorRectangleStart: {x: 7, y: 2}
+  _editorRectangleSize: {x: 8, y: 4}
   _editorRowPatternStart: {x: 0, y: 0}
   _editorRowWidths: 040000000300000003000000

@@ -60,8 +60,39 @@ public sealed class MapAnnotationLayerView : MonoBehaviour
             return;
         }
 
+        EnsureAnnotationLayersAreOnTop();
+
         DrawWalls();
         DrawStamps();
+    }
+
+    private void EnsureAnnotationLayersAreOnTop()
+    {
+        ConfigureAnnotationLayer(_lineLayer);
+        ConfigureAnnotationLayer(_stampLayer);
+
+        if (_lineLayer != null)
+        {
+            _lineLayer.SetAsLastSibling();
+        }
+
+        if (_stampLayer != null)
+        {
+            _stampLayer.SetAsLastSibling();
+        }
+    }
+
+    private void ConfigureAnnotationLayer(RectTransform layer)
+    {
+        if (layer == null)
+        {
+            return;
+        }
+
+        layer.anchorMin = new Vector2(0.0f, 1.0f);
+        layer.anchorMax = new Vector2(0.0f, 1.0f);
+        layer.pivot = new Vector2(0.0f, 1.0f);
+        layer.anchoredPosition = Vector2.zero;
     }
 
     private void DrawWalls()
@@ -81,6 +112,8 @@ public sealed class MapAnnotationLayerView : MonoBehaviour
 
         Image lineImage = Instantiate(_lineImagePrefab, _lineLayer);
         RectTransform lineRectTransform = lineImage.GetComponent<RectTransform>();
+
+        //ConfigureAnnotationItemRect(lineRectTransform);
 
         lineImage.color = _wallColor;
 
@@ -122,6 +155,7 @@ public sealed class MapAnnotationLayerView : MonoBehaviour
 
         Image stampImage = Instantiate(_stampImagePrefab, _stampLayer);
         RectTransform stampRectTransform = stampImage.GetComponent<RectTransform>();
+        //ConfigureAnnotationItemRect(stampRectTransform);
 
         // 스탬프 타입에 맞는 색상을 적용한다.
         stampImage.color = GetStampColor(stamp.StampType);
