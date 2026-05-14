@@ -9,6 +9,11 @@ public sealed class MutantController : MonoBehaviour
     [SerializeField] private MutantRoomSensor _roomSensor;
     [SerializeField] private RescueSignalSource _rescueSignalSource;
 
+    [Header("Visual")]
+    [SerializeField] private SpriteRenderer _spriteRenderer;
+    [SerializeField] private Color _dormantColor = Color.white;
+    [SerializeField] private Color _revealedMutantColor = new Color(80.0f / 255.0f, 14.0f / 255.0f, 14.0f / 255.0f, 1.0f);
+
     private Rigidbody2D _rigidbody;
     private Transform _playerTransform;
     private Vector3 _originalScale;
@@ -26,6 +31,12 @@ public sealed class MutantController : MonoBehaviour
     {
         // 이동 처리를 위해 Rigidbody2D를 캐싱한다.
         _rigidbody = GetComponent<Rigidbody2D>();
+
+        if (_spriteRenderer == null)
+        {
+            // 같은 오브젝트의 SpriteRenderer를 캐싱한다.
+            _spriteRenderer = GetComponent<SpriteRenderer>();
+        }
 
         // DOTween Scale 연출 복구를 위해 원래 크기를 저장한다.
         _originalScale = transform.localScale;
@@ -107,6 +118,17 @@ public sealed class MutantController : MonoBehaviour
         Debug.Log("변이체가 플레이어와 접촉했습니다.");
     }
 
+    private void SetSpriteColor(Color color)
+    {
+        if (_spriteRenderer == null)
+        {
+            return;
+        }
+
+        // 변이체의 현재 시각 색상을 변경한다.
+        _spriteRenderer.color = color;
+    }
+
     private void HandlePlayerEnteredRoom(Transform playerTransform)
     {
         _playerTransform = playerTransform;
@@ -151,6 +173,12 @@ public sealed class MutantController : MonoBehaviour
         _hasTriggered = true;
         _state = MutantState.Approaching;
         _approachTimer = 0.0f;
+
+        // 돌진 시작 순간 시체처럼 보이던 색을 변이체 색으로 바꾼다.
+        SetSpriteColor(_revealedMutantColor);
+
+        // 변이체 접근 시작 이벤트를 발행해 플레이어 패닉을 증가시킨다.
+        GameEventBus.RaiseMutantJumpScareStarted(transform.position);
 
         // 변이체가 구조 신호를 발생시키고 있었다면 접근 시작 순간 신호를 제거한다.
         if (_rescueSignalSource != null)
@@ -210,6 +238,9 @@ public sealed class MutantController : MonoBehaviour
 
         // 변이체는 기본 상태에서 약하게 꿈틀거리지만 이동하지 않는다.
         _rigidbody.linearVelocity = Vector2.zero;
+
+        // 잠복 상태에서는 시체처럼 보이도록 흰색을 유지한다.
+        SetSpriteColor(_dormantColor);
 
         PlayDormantPulse();
     }

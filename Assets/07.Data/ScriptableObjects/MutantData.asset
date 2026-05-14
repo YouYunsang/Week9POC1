@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 521b4739b6bfa03478a65f93883ebd82, type: 3}
   m_Name: MutantData
   m_EditorClassIdentifier: Assembly-CSharp::MutantData
-  _detectionDistance: 3
-  _approachSpeed: 8
+  _detectionDistance: 6
+  _approachSpeed: 13
   _stoppingDistanceFromPlayer: 1.2
-  _maxApproachDuration: 1
+  _maxApproachDuration: 0.6
   _dormantPulseScale: 1.04
   _dormantPulseDuration: 1.2
-  _jumpScareScale: 1.25
-  _jumpScareScaleDuration: 0.12
+  _jumpScareScale: 1.5
+  _jumpScareScaleDuration: 0.2
   _threateningPulseScale: 1.08
   _threateningPulseDuration: 0.55

@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17301d38f53a7f04c8b1aaf0b55f0bef, type: 3}
+  m_Name: PlayerPanicData
+  m_EditorClassIdentifier: Assembly-CSharp::PanicData
+  _maxPanic: 100
+  _initialPanic: 0
+  _panicIncreasePerSecondInDark: 6
+  _panicDecreasePerSecondInLight: 3
+  _mutantJumpScarePanicAmount: 25
+  _mutantThreatPanicPerSecond: 9
+  _controlLossDuration: 1.6
+  _controlLossMoveSpeed: 5
+  _panicAfterControlLoss: 50
